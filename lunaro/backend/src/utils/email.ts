@@ -13,9 +13,9 @@ export async function sendVerificationEmail(data: { email:string; name:string; u
 }
 
 export async function sendContactNotification(data: { name:string; email:string; company?:string; phone?:string; service?:string; budget?:string; message:string }) {
-  const rows = [
+  const rows = ([
     ["Name", data.name], ["Email", data.email], ["Company", data.company ?? "—"], ["Phone", data.phone ?? "—"], ["Service", data.service ?? "—"], ["Budget", data.budget ?? "—"]
-  ].map(([label,value]) => `<tr><td style="padding:10px;border-bottom:1px solid #243047;color:#8ea0bd">${label}</td><td style="padding:10px;border-bottom:1px solid #243047;color:#fff">${escapeHtml(value)}</td></tr>`).join("");
+  ] as Array<[string, string]>).map(([label,value]) => `<tr><td style="padding:10px;border-bottom:1px solid #243047;color:#8ea0bd">${label}</td><td style="padding:10px;border-bottom:1px solid #243047;color:#fff">${escapeHtml(value)}</td></tr>`).join("");
   const html = `<!doctype html><html><body style="margin:0;background:#070b14;color:#fff;font-family:Arial,sans-serif"><div style="max-width:680px;margin:30px auto;padding:30px;background:#0d1322;border:1px solid #1f2a42;border-radius:18px"><div style="font-size:28px;font-weight:800;letter-spacing:.08em">LUNARO</div><p style="color:#9fb0ca">New website inquiry</p><table style="width:100%;border-collapse:collapse">${rows}</table><h3 style="margin-top:28px">Message</h3><div style="padding:18px;background:#090e19;border-radius:12px;white-space:pre-wrap;color:#dfe8f5">${escapeHtml(data.message)}</div></div></body></html>`;
   await transporter.sendMail({ from: env.CONTACT_FROM, to: env.CONTACT_TO, replyTo: data.email, subject: `Lunaro — New inquiry from ${data.name}`, html });
 }
