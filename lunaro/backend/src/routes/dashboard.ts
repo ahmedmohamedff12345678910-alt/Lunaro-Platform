@@ -1,0 +1,1 @@
+import { Router } from "express"; import { metrics } from "../controllers/dashboard.js"; import { requireAuth,requireRoles } from "../middleware/auth.js"; const router=Router(); router.get("/metrics",requireAuth,requireRoles("ADMIN","SUPER_ADMIN"),metrics); export default router;

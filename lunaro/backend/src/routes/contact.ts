@@ -1,0 +1,2 @@
+import { Router } from "express"; import { createContact,listContacts,updateContact } from "../controllers/contact.js"; import { requireAuth,requireRoles } from "../middleware/auth.js";
+const router=Router(); router.post("/",createContact); router.get("/",requireAuth,requireRoles("ADMIN","SUPER_ADMIN"),listContacts); router.patch("/:id",requireAuth,requireRoles("ADMIN","SUPER_ADMIN"),updateContact); export default router;

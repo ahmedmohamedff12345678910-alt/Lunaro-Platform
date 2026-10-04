@@ -1,0 +1,10 @@
+import type { RequestHandler } from "express";
+import { z } from "zod";
+import { prisma } from "../config/db.js";
+import { AppError } from "../middleware/error.js";
+const schema=z.object({titleAr:z.string().min(2).max(120),titleEn:z.string().min(2).max(120),descriptionAr:z.string().min(5).max(1000),descriptionEn:z.string().min(5).max(1000),icon:z.string().min(1).max(60),featured:z.boolean().default(true),active:z.boolean().default(true),sortOrder:z.number().int().min(0).default(0)});
+export const listPublic:RequestHandler=async(_req,res,next)=>{try{const items=await prisma.service.findMany({where:{active:true},orderBy:{sortOrder:"asc"}});res.json({success:true,items});}catch(e){next(e)}};
+export const listAll:RequestHandler=async(_req,res,next)=>{try{const items=await prisma.service.findMany({orderBy:{sortOrder:"asc"}});res.json({success:true,items});}catch(e){next(e)}};
+export const create:RequestHandler=async(req,res,next)=>{try{const data=schema.parse(req.body);const item=await prisma.service.create({data});res.status(201).json({success:true,item});}catch(e){next(e)}};
+export const update:RequestHandler=async(req,res,next)=>{try{const id=z.string().cuid().parse(req.params.id);const data=schema.partial().parse(req.body);const item=await prisma.service.update({where:{id},data});res.json({success:true,item});}catch(e){next(e)}};
+export const remove:RequestHandler=async(req,res,next)=>{try{const id=z.string().cuid().parse(req.params.id);await prisma.service.delete({where:{id}});res.status(204).send();}catch(e){next(e)}};

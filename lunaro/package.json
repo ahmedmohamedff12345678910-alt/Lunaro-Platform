@@ -1,0 +1,8 @@
+{
+  "name":"lunaro-platform",
+  "private":true,
+  "version":"1.0.0",
+  "workspaces":["backend","frontend","admin"],
+  "scripts":{"dev":"concurrently \"npm:dev:backend\" \"npm:dev:frontend\" \"npm:dev:admin\"","dev:backend":"npm --workspace backend run dev","dev:frontend":"npm --workspace frontend run dev","dev:admin":"npm --workspace admin run dev","build":"npm run build --workspaces","typecheck":"npm run typecheck --workspaces","db:generate":"npm --workspace backend run prisma:generate","db:migrate":"npm --workspace backend run prisma:migrate","db:seed":"npm --workspace backend run prisma:seed"},
+  "devDependencies":{"concurrently":"^9.2.1"}
+}

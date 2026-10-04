@@ -1,0 +1,2 @@
+import { Router } from "express"; import * as c from "../controllers/services.js"; import { requireAuth,requireRoles } from "../middleware/auth.js";
+const router=Router(); router.get("/",c.listPublic); router.get("/admin",requireAuth,requireRoles("ADMIN","SUPER_ADMIN"),c.listAll); router.post("/",requireAuth,requireRoles("ADMIN","SUPER_ADMIN"),c.create); router.patch("/:id",requireAuth,requireRoles("ADMIN","SUPER_ADMIN"),c.update); router.delete("/:id",requireAuth,requireRoles("SUPER_ADMIN"),c.remove); export default router;

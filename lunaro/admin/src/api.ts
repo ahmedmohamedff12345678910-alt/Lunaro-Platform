@@ -1,0 +1,5 @@
+const API=import.meta.env.VITE_API_URL||"http://localhost:4000/api";export async function api<T>(path:string,options:RequestInit={}){const r=await fetch(`${API}${path}`,{...options,credentials:"include",headers:{"Content-Type":"application/json",...(options.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.message||"Request failed");return d as T;}
+export type User={id:string;name:string;email:string;role:"USER"|"ADMIN"|"SUPER_ADMIN"};
+export type Service={id:string;titleAr:string;titleEn:string;descriptionAr:string;descriptionEn:string;icon:string;active:boolean;featured:boolean;sortOrder:number};
+export type Project={id:string;titleAr:string;titleEn:string;descriptionAr:string;descriptionEn:string;imageUrl:string|null;projectUrl:string|null;technologies:string[];active:boolean;featured:boolean;sortOrder:number};
+export type Contact={id:string;name:string;email:string;company:string|null;phone:string|null;service:string|null;budget:string|null;message:string;status:string;createdAt:string};
